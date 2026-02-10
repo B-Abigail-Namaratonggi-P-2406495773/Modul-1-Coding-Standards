@@ -20,9 +20,9 @@ Student Number: 2406495773
 
 **b.Function:**
   - Setiap fungsi dibuat kecil, fokus, dan hanya melakukan satu tugas (Single Responsibility).
-  - createProductPage hanya mempersiapkan model untuk merender halaman pembuatan produk.
-  - createProductPost hanya menangani penerimaan data form dan memanggil service.
-  - edit (di Service) hanya fokus mencari produk berdasarkan ID dan memperbarui atributnya jika ditemukan.
+  - `createProductPage` hanya mempersiapkan model untuk merender halaman pembuatan produk.
+  - `createProductPost` hanya menangani penerimaan data form dan memanggil service.
+  - `edit` (di `Service`) hanya fokus mencari produk berdasarkan ID dan memperbarui atributnya jika ditemukan.
 
 **c. Comments:**
   - Kode ditulis sedemikian rupa agar menjelaskan dirinya sendiri (self-explanatory), sehingga mengurangi kebutuhan akan komentar.
@@ -38,6 +38,7 @@ Student Number: 2406495773
 
 **a. ID yang Aman (mencegah OWASP Broken Access Control):** 
 - Menggunakan `UUID.randomUUID()` untuk ID produk. Ini mencegah serangan enumerasi ID (menebak ID urut 1, 2, 3) yang bisa mengekspos data orang lain.
+
 **b. Data Binding:**
 - Menggunakan `@ModelAttribute` pada Controller dan Thymeleaf `th:object` di HTML. Ini memastikan input user diproses murni sebagai data, bukan kode yang bisa diexecute.
 ---
