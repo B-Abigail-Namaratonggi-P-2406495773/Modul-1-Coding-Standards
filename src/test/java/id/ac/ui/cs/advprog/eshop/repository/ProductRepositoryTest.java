@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
+import id.ac.ui.cs.advprog.eshop.service.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,5 +66,57 @@ class ProductRepositoryTest {
         savedProduct = productIterator.next();
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testEditProductPositive() {
+        Product product = new Product();
+        product.setProductId("uuid-123");
+        product.setProductName("Sampo Awal");
+        product.setProductQuantity(10);
+
+        productRepository.create(product);
+        Product foundProduct = productRepository.findById("uuid-123");
+        foundProduct.setProductName("Sampo Baru");
+        foundProduct.setProductQuantity(20);
+
+        Product updatedProduct = productRepository.findById("uuid-123");
+        assertEquals("Sampo Baru", updatedProduct.getProductName());
+        assertEquals(20, updatedProduct.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductNotFound() {
+        Product foundProduct = productRepository.findById("uuid-tidak-ada");
+        assertNull(foundProduct);
+    }
+
+    @Test
+    void testDeleteProductPositive() {
+        Product product = new Product();
+        product.setProductId("uuid-123");
+        product.setProductName("Sampo Hapus");
+        product.setProductQuantity(5);
+
+        productRepository.create(product);
+        productRepository.deleteById("uuid-123");
+        Product deletedProduct = productRepository.findById("uuid-123");
+        assertNull(deletedProduct);
+
+        Iterator<Product> iterator = productRepository.findAll();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void testDeleteProductNotFound() {
+        Product product = new Product();
+        product.setProductId("uuid-exist");
+        product.setProductName("Sampo Tetap Ada");
+        productRepository.create(product);
+        productRepository.deleteById("uuid-tidak-ada");
+
+        Iterator<Product> iterator = productRepository.findAll();
+        assertTrue(iterator.hasNext());
+        assertEquals("uuid-exist", iterator.next().getProductId());
     }
 }
