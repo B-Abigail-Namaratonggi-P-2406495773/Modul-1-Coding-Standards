@@ -43,4 +43,9 @@ public class ProductServiceImpl implements ProductService {
             existing.setProductQuantity(product.getProductQuantity());
         }
     }
+
+    @Override
+    public void delete(String id) {
+        productRepository.deleteById(id);
+    }
 }
