@@ -66,4 +66,21 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testFindByIdAndThenDelete() {
+        Product product = new Product();
+        product.setProductId("target-id");
+        product.setProductName("Barang Dicari");
+        productRepository.create(product);
+
+        Product foundProduct = productRepository.findById("target-id");
+        assertNotNull(foundProduct);
+        assertEquals("Barang Dicari", foundProduct.getProductName());
+
+        productRepository.deleteById("target-id");
+
+        Product deletedProduct = productRepository.findById("target-id");
+        assertNull(deletedProduct);
+    }
 }
