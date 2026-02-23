@@ -26,6 +26,7 @@ sonar {
         property("sonar.projectKey", "Modul-1-Coding-Standards")
         property("sonar.organization", "b-abigail-namaratonggi-p-2406495773")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.branch.name", "main")
     }
 }
 
