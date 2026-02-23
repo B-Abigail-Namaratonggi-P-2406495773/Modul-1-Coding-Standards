@@ -17,21 +17,19 @@
         <input type="hidden" th:field="*{productId}" />
 
         <div class="form-group">
-            <label>Name</label>
-            <input
-                    th:field="*{productName}"
-                    type="text"
-                    class="form-control mb-3 col-4"
-                    required>
+            <label for="productName">Name</label> <input th:field="*{productName}"
+                                                         id="productName"
+                                                         type="text"
+                                                         class="form-control mb-3 col-4"
+                                                         required>
         </div>
 
         <div class="form-group">
-            <label>Quantity</label>
-            <input
-                    th:field="*{productQuantity}"
-                    type="number"
-                    class="form-control mb-3 col-4"
-                    required>
+            <label for="productQuantity">Quantity</label> <input th:field="*{productQuantity}"
+                                                                 id="productQuantity"
+                                                                 type="number"
+                                                                 class="form-control mb-3 col-4"
+                                                                 required>
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
