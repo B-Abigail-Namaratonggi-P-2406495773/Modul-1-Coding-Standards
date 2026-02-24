@@ -83,4 +83,27 @@ class ProductRepositoryTest {
         Product deletedProduct = productRepository.findById("target-id");
         assertNull(deletedProduct);
     }
+
+    @Test
+    void testFindByIdNotFound() {
+        Product product = new Product();
+        product.setProductId("real-id");
+        productRepository.create(product);
+
+        Product foundProduct = productRepository.findById("non-existent-id");
+
+        assertNull(foundProduct);
+    }
+
+    @Test
+    void testDeleteByIdNotFound() {
+        Product product = new Product();
+        product.setProductId("real-id");
+        productRepository.create(product);
+
+        productRepository.deleteById("non-existent-id");
+
+        Product remains = productRepository.findById("real-id");
+        assertNotNull(remains);
+    }
 }
