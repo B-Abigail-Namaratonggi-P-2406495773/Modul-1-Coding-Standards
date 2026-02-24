@@ -60,3 +60,19 @@ Setelah menulis unit test, saya merasa lebih percaya diri terhadap keamanan dan 
 #### Question 2
 Pembuatan functional test suite baru dengan menyalin kode lama akan menurunkan kualitas kode karena memunculkan duplikasi. Hal ini menyulitkan pemeliharaan, sebab jika konfigurasi setup berubah, kita harus mengubahnya di setiap file satu per satu. Solusi terbaik adalah mengekstrak logika setup yang sama ke dalam sebuah Base Class agar bisa digunakan ulang oleh test lainnya tanpa menulis ulang kode.
 </details>
+
+<details>
+<summary><b>Reflection on Module 2</b></summary>
+
+#### Question 1
+Masalah kualitas kode yang saya perbaiki adalah isu Maintability pada file `editProduct.html`, di mana elemen `<label>` belum terhubung dengan benar ke kolom inputnya. 
+Strategi perbaikan yang saya lakukan adalah: 
+* Menggunakan dashboard SonarCloud untuk tahu kolom mana saja yang labelnya bermasalah.
+* Mambahkan atribut `id` di bagian `<input>` dan saya pasangkan dengan atribut `for` di tag `<label>` nya (misalnya untuk bagian nama produk dan kuantitas) supaya keduanya saling terhubung.
+* Melakukan commit dan push perubahan tersebut ke branch `module-2-exercise` untuk memverifikasi bahwa code smell tersebut hilang pada analisis SonarCloud berikutnya.
+
+#### Question 2
+Menurut saya, apa yang sudah diterapkan sekarang sudah masuk kategori CI/CD. Karena setiap kali saya melakukan push ke GitHub, sistem secara otomatis menjalankan GitHub Actions untuk mengetes kode dan mengecek kualitasnya lewat SonarCloud tanpa perlu saya jalankan manual. Ini sudah memenuhi sisi Continuous Integrationnya.
+
+Lalu untuk Continuous Deployment, aplikasinya juga sudah otomatis terupdate di platform PaaS (Koyeb) setiap kali ada perubahan di repositori. Platform tersebut secara otomatis mendeteksi pembaruan pada branch yang terhubung, melakukan proses build menggunakan Dockerfile, dan memperbarui aplikasi di server produksi hingga statusnya menjadi Healthy. Seluruh siklus ini menjamin bahwa setiap kode yang lulus tahap pengujian dapat langsung didistribusikan ke pengguna secara cepat dan konsisten.
+</details>
