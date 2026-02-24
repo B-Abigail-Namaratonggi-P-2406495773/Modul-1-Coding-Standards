@@ -59,4 +59,5 @@ Setelah menulis unit test, saya merasa lebih percaya diri terhadap keamanan dan 
 
 #### Question 2
 Pembuatan functional test suite baru dengan menyalin kode lama akan menurunkan kualitas kode karena memunculkan duplikasi. Hal ini menyulitkan pemeliharaan, sebab jika konfigurasi setup berubah, kita harus mengubahnya di setiap file satu per satu. Solusi terbaik adalah mengekstrak logika setup yang sama ke dalam sebuah Base Class agar bisa digunakan ulang oleh test lainnya tanpa menulis ulang kode.
+
 </details>
