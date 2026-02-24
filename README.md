@@ -6,6 +6,8 @@ Class: Advance Programming B
 
 Student Number: 2406495773
 
+**Link to Eshop** : https://isolated-pearla-b-abigail-namaratonggi-p-2406495773-fb75a6ac.koyeb.app/
+
 <details>
 <summary><b>Reflection on Module 1</b></summary>
 <br>
@@ -63,7 +65,7 @@ Pembuatan functional test suite baru dengan menyalin kode lama akan menurunkan k
 
 <details>
 <summary><b>Reflection on Module 2</b></summary>
-**Deployment Link**  : https://isolated-pearla-b-abigail-namaratonggi-p-2406495773-fb75a6ac.koyeb.app/product/list
+
 
 #### Question 1
 Masalah kualitas kode yang saya perbaiki adalah isu Maintability pada file `editProduct.html`, di mana elemen `<label>` belum terhubung dengan benar ke kolom inputnya.
