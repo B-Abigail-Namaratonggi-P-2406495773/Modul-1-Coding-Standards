@@ -79,3 +79,25 @@ Menurut saya, apa yang sudah diterapkan sekarang sudah masuk kategori CI/CD. Kar
 
 Lalu untuk Continuous Deployment, aplikasinya juga sudah otomatis terupdate di platform PaaS (Koyeb) setiap kali ada perubahan di repositori. Platform tersebut secara otomatis mendeteksi pembaruan pada branch yang terhubung, melakukan proses build menggunakan Dockerfile, dan memperbarui aplikasi di server produksi hingga statusnya menjadi Healthy. Seluruh siklus ini menjamin bahwa setiap kode yang lulus tahap pengujian dapat langsung didistribusikan ke pengguna secara cepat dan konsisten.
 </details>
+
+<details>
+<summary><b>Reflection on Module 3</b></summary>
+
+#### Question 1
+
+* **Single Responsibility Principle** : Saya memisahkan tanggung jawab pada Repository. Sebelumnya, `CarRepository` menangani penyimpanan data sekaligus pembuatan ID (UUID). Saya mengubah kode dengan memindahkan logika pembuatan UUID ke `CarServiceImpl` sehingga Repository kini hanya bertanggung jawab penuh atas penyimpanan data.
+* **Open-Closed Principle** : Saya mengubah `CarRepository` menjadi sebuah interface. Dengan struktur ini, sistem menjadi terbuka untuk extensions, tetapi tertutup untuk modifikasi.
+* **Liskov Substitution Principle** : Saya menghapus hubungan inheritance di mana `CarController` mewarisi `ProductController`. Hal ini karena `Car` dan `Product` adalah entitas berbeda, dan pemaksaan hubungan tersebut menyebabkan masalah dependensi pada Application Context yang merusak jalannya unit test.
+* **Interface Segregation Principle** : Saya memecah `CarRepository` menjadi sebuah interface dan implementasinya (`CarRepositoryImpl`). Hal ini memastikan bahwa sistem tidak memaksa pengguna untuk bergantung pada metode yang tidak relevan bagi mereka, melainkan cukup pada interface.
+* **Dependency Inversion Principle** : Saya mengubah cara Controller dan Service saling bergantung. Sekarang, `CarController` bergantung pada abstraksi (interface `CarService`) dan bukan pada class `CarServiceImpl`.
+
+#### Question 2
+* **Testability Meningkat** : Dengan memisahkan tanggung jawab, unit testing menjadi lebih mudah dilakukan. Sebagai contoh, setelah saya menghapus inheritance pada `CarController`, pengujian terhadap `ProductController` tidak lagi gagal karena tidak perlu lagi memuat dependensi milik `Car` yang tidak relevan.
+* **Maintainability menjadi Lebih Mudah** : Karena kode bergantung pada interface, saya bisa lebih mudah menukar cara data disimpan. Misalnya, jika suatu saat tim ingin mengganti penyimpanan dari List di memori ke database SQL, saya cukup membuat implementasi baru dari `CarRepository` tanpa perlu mengubah logika di `CarServiceImpl`.
+* **Kode menjadi Lebih Terorganisir** : Memindahkan logika UUID dari repository membuat class tersebut lebih pendek dan fokus. Hal ini memudahkan pengembang lain untuk memahami fungsionalitas repository.
+
+#### Question 3
+* Perubahan kecil pada satu bagian dapat merusak fitur lain yang tidak terkait. Contohnya, jika tetap menggunakan inheritance antar controller, perubahan pada endpoint `Product` bisa secara tidak sengaja mengganggu jalannya aplikasi `Car`.
+* Tanpa abstraksi, sistem menjadi lebih sulit untuk dikembangkan. `CarController` akan terikat dengan `CarServiceImpl`, sehingga sulit untuk melakukan mocking saat testing.
+* Class yang melakukan terlalu banyak tugas akan menjadi sangat panjang dan sulit dianalisis. Class seperti `CarRepository` yang menangani ID sekaligus data akan lebih rentan terhadap bug karena setiap perubahan logika ID mengharuskan kita mengubah kode penyimpanan data.
+</details>
