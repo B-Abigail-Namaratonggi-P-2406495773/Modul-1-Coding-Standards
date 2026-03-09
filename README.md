@@ -101,3 +101,21 @@ Lalu untuk Continuous Deployment, aplikasinya juga sudah otomatis terupdate di p
 * Tanpa abstraksi, sistem menjadi lebih sulit untuk dikembangkan. `CarController` akan terikat dengan `CarServiceImpl`, sehingga sulit untuk melakukan mocking saat testing.
 * Class yang melakukan terlalu banyak tugas akan menjadi sangat panjang dan sulit dianalisis. Class seperti `CarRepository` yang menangani ID sekaligus data akan lebih rentan terhadap bug karena setiap perubahan logika ID mengharuskan kita mengubah kode penyimpanan data.
 </details>
+
+<details>
+<summary><b>Reflection on Module 4</b></summary>
+
+#### Question 1
+Setelah mencoba alur Test-Driven Development (TDD), saya merasa metode ini sangat membantu dalam menjaga fokus. Dengan menulis tes terlebih dahulu, saya jadi memahami requirement secara mendalam sebelum mengimplementasi kode. Alur Red-Green-Refactor membuat menjadi lebih aman saat melakukan perubahan kode karena ada "jaring pengaman" yang memastikan fitur lama tidak rusak. Untuk kedepannya, saya ingin lebih disiplin dalam membuat tes yang mencakup lebih banyak skenario edge case.
+
+#### Question 2
+Secara keseluruhan, unit test yang saya buat sudah berusaha mengikuti prinsip F.I.R.S.T:
+
+* **Fast**: Tes berjalan sangat cepat (dalam hitungan milidetik) sehingga tidak menghambat proses development. 
+* **Independent**: Setiap tes bisa berdiri sendiri dan tidak bergantung pada urutan eksekusi atau hasil dari tes lainnya. 
+* **Repeatable**: Tes memberikan hasil yang konsisten, baik dijalankan di komputer lokal maupun di environment lain. 
+* **Self-Validating**: Tes otomatis menentukan apakah hasilnya Pass atau Fail tanpa perlu saya cek manual satu-satu. 
+* **Timely**: Karena menggunakan TDD, tes dibuat tepat waktu (sebelum kodenya ada), bukan setelah fitur selesai.
+
+Hal yang perlu saya tingkatkan adalah memastikan deskripsi tes lebih jelas agar saat terjadi kegagalan, saya bisa langsung tahu bagian mana yang bermasalah tanpa harus membaca ulang seluruh isi kodenya.
+</details>
