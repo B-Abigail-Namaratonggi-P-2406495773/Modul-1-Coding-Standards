@@ -45,13 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         if ("COD".equals(method)) {
-
-            String address = paymentData.get("address");
-            String deliveryFee = paymentData.get("deliveryFee");
-
-            if (address == null || address.isEmpty() ||
-                    deliveryFee == null || deliveryFee.isEmpty()) {
-
+            if (!isValidCOD(paymentData)) {
                 payment.setStatus(REJECTED);
             }
         }
@@ -60,6 +54,14 @@ public class PaymentServiceImpl implements PaymentService {
         paymentOrders.put(paymentId, order);
 
         return payment;
+    }
+
+    private boolean isValidCOD(Map<String,String> paymentData){
+        String address = paymentData.get("address");
+        String deliveryFee = paymentData.get("deliveryFee");
+
+        return !(address == null || address.isEmpty() ||
+                deliveryFee == null || deliveryFee.isEmpty());
     }
 
     @Override
