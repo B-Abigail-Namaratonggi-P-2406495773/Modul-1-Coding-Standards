@@ -11,7 +11,11 @@ import java.util.UUID;
 
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
-    private  Map<String, Order> paymentOrders = new HashMap<>();
+    private final Map<String, Order> paymentOrders = new HashMap<>();
+
+    private static final String SUCCESS = "SUCCESS";
+    private static final String REJECTED = "REJECTED";
+    private static final String FAILED = "FAILED";
 
     public PaymentServiceImpl(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
@@ -20,32 +24,44 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
 
-        String id = UUID.randomUUID().toString();
+        String paymentId = UUID.randomUUID().toString();
 
-        Payment payment = new Payment(id, method, "PENDING", paymentData);
+        Payment payment = new Payment(
+                paymentId,
+                method,
+                "PENDING",
+                paymentData
+        );
 
-        paymentOrders.put(payment.getId(), order);
         paymentRepository.save(payment);
+        paymentOrders.put(paymentId, order);
 
         return payment;
     }
 
     @Override
     public Payment setStatus(Payment payment, String status) {
+
         payment.setStatus(status);
+
+        updateOrderStatus(payment, status);
+
+        paymentRepository.save(payment);
+
+        return payment;
+    }
+
+    private void updateOrderStatus(Payment payment, String status) {
 
         Order order = paymentOrders.get(payment.getId());
 
-        if (order != null) {
-            if (status.equals("SUCCESS")) {
-                order.setStatus("SUCCESS");
-            } else if (status.equals("REJECTED")) {
-                order.setStatus("FAILED");
-            }
-        }
+        if (order == null) return;
 
-        paymentRepository.save(payment);
-        return payment;
+        if (status.equals(SUCCESS)) {
+            order.setStatus(SUCCESS);
+        } else if (status.equals(REJECTED)) {
+            order.setStatus(FAILED);
+        }
     }
 
     @Override
