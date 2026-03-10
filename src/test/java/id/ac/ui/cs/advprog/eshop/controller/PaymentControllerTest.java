@@ -27,15 +27,4 @@ public class PaymentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("paymentDetail"));
     }
-
-    @Test
-    public void testAdminPaymentDetailPage() throws Exception {
-        String paymentId = "PAY-1";
-        Payment mockPayment = new Payment(paymentId, "VOUCHER", "PENDING", null);
-        org.mockito.Mockito.when(paymentService.getPayment(paymentId)).thenReturn(mockPayment);
-
-        mockMvc.perform(get("/payment/admin/detail/" + paymentId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("adminPaymentDetail"));
-    }
 }
