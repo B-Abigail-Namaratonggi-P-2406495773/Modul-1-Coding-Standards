@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 
+import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.service.PaymentService;
 import id.ac.ui.cs.advprog.eshop.controller.PaymentController;
 import org.junit.jupiter.api.Test;
@@ -25,5 +26,16 @@ public class PaymentControllerTest {
         mockMvc.perform(get("/payment/detail"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("paymentDetail"));
+    }
+
+    @Test
+    public void testAdminPaymentDetailPage() throws Exception {
+        String paymentId = "PAY-1";
+        Payment mockPayment = new Payment(paymentId, "VOUCHER", "PENDING", null);
+        org.mockito.Mockito.when(paymentService.getPayment(paymentId)).thenReturn(mockPayment);
+
+        mockMvc.perform(get("/payment/admin/detail/" + paymentId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminPaymentDetail"));
     }
 }

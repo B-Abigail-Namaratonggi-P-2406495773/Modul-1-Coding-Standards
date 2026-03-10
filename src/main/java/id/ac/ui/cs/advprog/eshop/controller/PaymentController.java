@@ -18,4 +18,6 @@ public class PaymentController {
     public String paymentDetailPage(Model model) {
         return "paymentDetail";
     }
+
+
 }
