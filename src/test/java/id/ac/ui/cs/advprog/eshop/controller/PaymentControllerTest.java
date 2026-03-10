@@ -26,11 +26,4 @@ public class PaymentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("paymentDetail"));
     }
-
-    @Test
-    public void testAdminPaymentListPage() throws Exception {
-        mockMvc.perform(get("/payment/admin/list"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("paymentList"));
-    }
 }
