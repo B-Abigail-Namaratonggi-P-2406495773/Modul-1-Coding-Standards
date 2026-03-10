@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Detail</title>
+</head>
+<body>
+<h1>Informasi Pembayaran</h1>
+
+<div th:if="${payment != null}">
+    <p><strong>ID Pembayaran:</strong> <span th:text="${payment.id}"></span></p>
+    <p><strong>Metode:</strong> <span th:text="${payment.method}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${payment.status}"></span></p>
+</div>
+
+<div th:if="${payment == null}">
+    <p>Silakan masukkan ID pembayaran atau data tidak ditemukan.</p>
+</div>
+
+<hr>
+<a href="/order/history">Kembali ke Riwayat Pesanan</a>
+</body>
+</html>
