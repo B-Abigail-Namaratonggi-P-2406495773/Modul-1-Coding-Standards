@@ -68,4 +68,15 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("payOrder"));
     }
+
+    @Test
+    public void testOrderPayPost() throws Exception {
+        String orderId = "123-abc";
+
+        mockMvc.perform(post("/order/pay/" + orderId)
+                        .param("paymentMethod", "CASH"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("paymentResult"))
+                .andExpect(model().attributeExists("paymentId"));
+    }
 }
