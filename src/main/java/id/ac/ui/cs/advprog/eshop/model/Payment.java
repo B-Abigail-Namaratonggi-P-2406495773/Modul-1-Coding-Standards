@@ -19,8 +19,19 @@ public class Payment {
     private Map<String, String> paymentData;
 
     public Payment(String id, String method, String status, Map<String, String> paymentData) {
+        this.id = id;
+        this.method = method;
+        this.status = status;
+        this.paymentData = paymentData;
     }
 
     public void setStatus(String status) {
+        if (!status.equals("SUCCESS") &&
+                !status.equals("REJECTED") &&
+                !status.equals("PENDING")) {
+            throw new IllegalArgumentException("Invalid payment status");
+        }
+
+        this.status = status;
     }
 }
