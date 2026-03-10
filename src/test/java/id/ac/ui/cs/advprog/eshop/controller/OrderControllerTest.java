@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 
+import id.ac.ui.cs.advprog.eshop.model.Order;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.OrderService;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,5 +49,22 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("listOrder"))
                 .andExpect(model().attributeExists("orders"));
+    }
+
+    @Test
+    public void testOrderPayPage() throws Exception {
+        String orderId = "123-abc";
+        Order order = Order.builder()
+                .id(orderId)
+                .author("Abigail")
+                .products(List.of(new Product()))
+                .build();
+
+        org.mockito.Mockito.when(orderService.findById(orderId)).thenReturn(order);
+
+        mockMvc.perform(get("/order/pay/" + orderId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("payOrder"))
+                .andExpect(model().attributeExists("order"));
     }
 }
