@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentRepository {
-    private List<Payment> paymentData = new ArrayList<>();
+    private final List<Payment> paymentData = new ArrayList<>();
 
     public Payment save(Payment payment) {
         for (int i = 0; i < paymentData.size(); i++) {
-            if (paymentData.get(i).getId().equals(payment.getId())) {
+            Payment existingPayment = paymentData.get(i);
+
+            if (existingPayment.getId().equals(payment.getId())) {
                 paymentData.set(i, payment);
                 return payment;
             }
@@ -30,6 +32,6 @@ public class PaymentRepository {
     }
 
     public List<Payment> findAll() {
-        return paymentData;
+        return new ArrayList<>(paymentData);
     }
 }
