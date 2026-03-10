@@ -39,4 +39,11 @@ public class OrderController {
         model.addAttribute("orders", orders);
         return "listOrder";
     }
+
+    @GetMapping("/pay/{orderId}")
+    public String payOrderPage(@PathVariable String orderId, Model model) {
+        Order order = orderService.findById(orderId);
+        model.addAttribute("order", order);
+        return "payOrder";
+    }
 }
