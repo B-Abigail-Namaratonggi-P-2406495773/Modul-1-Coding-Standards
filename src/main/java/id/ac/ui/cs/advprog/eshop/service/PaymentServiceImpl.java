@@ -33,6 +33,17 @@ public class PaymentServiceImpl implements PaymentService {
                 paymentData
         );
 
+        if ("VOUCHER".equals(method)) {
+
+            String voucherCode = paymentData.get("voucherCode");
+
+            if (isValidVoucher(voucherCode)) {
+                payment.setStatus(SUCCESS);
+            } else {
+                payment.setStatus(REJECTED);
+            }
+        }
+
         paymentRepository.save(payment);
         paymentOrders.put(paymentId, order);
 
@@ -73,4 +84,25 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
+
+    private boolean isValidVoucher(String voucherCode) {
+
+        if (voucherCode == null) return false;
+
+        if (voucherCode.length() != 16) return false;
+
+        if (!voucherCode.startsWith("ESHOP")) return false;
+
+        int digitCount = 0;
+
+        for (char c : voucherCode.toCharArray()) {
+            if (Character.isDigit(c)) {
+                digitCount++;
+            }
+        }
+
+        return digitCount == 8;
+    }
+
+
 }
