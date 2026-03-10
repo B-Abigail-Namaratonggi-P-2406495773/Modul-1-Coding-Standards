@@ -1,6 +1,8 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,69 +16,94 @@ class PaymentServiceTest {
 
     PaymentService paymentService;
     PaymentRepository paymentRepository;
+    Order order;
 
     @BeforeEach
     void setUp() {
         paymentRepository = new PaymentRepository();
-        paymentService = new PaymentService(paymentRepository);
+        paymentService = new PaymentServiceImpl(paymentRepository);
+        order = createOrder();
     }
 
-    @Test
-    void testCreatePayment() {
-        Map<String, String> data = new HashMap<>();
-        data.put("voucherCode", "ESHOP12345678ABCD");
+    private Order createOrder() {
 
-        Payment payment = new Payment(
-                "payment-1",
-                "VOUCHER",
-                "PENDING",
-                data
+        Product product = new Product();
+        product.setProductId("1");
+        product.setProductName("Test Product");
+        product.setProductQuantity(1);
+
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+
+        return new Order(
+                "order-1",
+                products,
+                System.currentTimeMillis(),
+                "tester"
         );
-
-        Payment result = paymentService.createPayment(payment);
-
-        assertEquals(payment.getId(), result.getId());
-        assertEquals(payment.getMethod(), result.getMethod());
-        assertEquals(payment.getStatus(), result.getStatus());
     }
 
     @Test
-    void testFindPaymentByIdIfExists() {
-        Map<String, String> data = new HashMap<>();
+    void testAddPayment() {
 
-        Payment payment = new Payment(
-                "payment-1",
-                "COD",
-                "PENDING",
-                data
-        );
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","ESHOP12345678ABCD");
 
-        paymentService.createPayment(payment);
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
 
-        Payment result = paymentService.getPaymentById("payment-1");
-
-        assertEquals("payment-1", result.getId());
+        assertNotNull(payment);
+        assertEquals("VOUCHER",payment.getMethod());
+        assertEquals("PENDING",payment.getStatus());
     }
 
     @Test
-    void testFindPaymentByIdIfNotExists() {
-        Payment result = paymentService.getPaymentById("unknown");
+    void testSetStatusSuccessUpdatesOrder() {
+
+        Payment payment = paymentService.addPayment(order,"COD",new HashMap<>());
+
+        paymentService.setStatus(payment,"SUCCESS");
+
+        assertEquals("SUCCESS",payment.getStatus());
+        assertEquals("SUCCESS",order.getStatus());
+    }
+
+    @Test
+    void testSetStatusRejectedUpdatesOrder() {
+
+        Payment payment = paymentService.addPayment(order,"COD",new HashMap<>());
+
+        paymentService.setStatus(payment,"REJECTED");
+
+        assertEquals("REJECTED",payment.getStatus());
+        assertEquals("FAILED",order.getStatus());
+    }
+
+    @Test
+    void testGetPaymentById() {
+
+        Payment payment = paymentService.addPayment(order,"COD",new HashMap<>());
+
+        Payment result = paymentService.getPayment(payment.getId());
+
+        assertEquals(payment.getId(),result.getId());
+    }
+
+    @Test
+    void testGetPaymentIfNotExists() {
+
+        Payment result = paymentService.getPayment("unknown");
 
         assertNull(result);
     }
 
     @Test
     void testGetAllPayments() {
-        Map<String, String> data = new HashMap<>();
 
-        Payment payment1 = new Payment("1","COD","PENDING",data);
-        Payment payment2 = new Payment("2","COD","PENDING",data);
-
-        paymentService.createPayment(payment1);
-        paymentService.createPayment(payment2);
+        paymentService.addPayment(order,"COD",new HashMap<>());
+        paymentService.addPayment(order,"COD",new HashMap<>());
 
         List<Payment> result = paymentService.getAllPayments();
 
-        assertEquals(2, result.size());
+        assertEquals(2,result.size());
     }
 }
