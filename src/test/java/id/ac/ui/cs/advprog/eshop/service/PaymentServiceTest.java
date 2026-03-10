@@ -47,13 +47,13 @@ class PaymentServiceTest {
     void testAddPayment() {
 
         Map<String,String> data = new HashMap<>();
-        data.put("voucherCode","ESHOP12345678ABCD");
+        data.put("voucherCode","ESHOP12345678ABC");
 
         Payment payment = paymentService.addPayment(order,"VOUCHER",data);
 
         assertNotNull(payment);
         assertEquals("VOUCHER",payment.getMethod());
-        assertEquals("PENDING",payment.getStatus());
+        assertEquals("SUCCESS",payment.getStatus());
     }
 
     @Test
