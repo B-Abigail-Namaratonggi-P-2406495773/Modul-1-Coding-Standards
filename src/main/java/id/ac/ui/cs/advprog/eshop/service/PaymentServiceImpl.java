@@ -34,14 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
         );
 
         if ("VOUCHER".equals(method)) {
-
-            String voucherCode = paymentData.get("voucherCode");
-
-            if (isValidVoucher(voucherCode)) {
-                payment.setStatus(SUCCESS);
-            } else {
-                payment.setStatus(REJECTED);
-            }
+            validateVoucherPayment(payment, paymentData);
         }
 
         if ("COD".equals(method)) {
@@ -56,6 +49,16 @@ public class PaymentServiceImpl implements PaymentService {
         return payment;
     }
 
+    private void validateVoucherPayment(Payment payment, Map<String,String> paymentData){
+        String voucherCode = paymentData.get("voucherCode");
+
+        if (isValidVoucher(voucherCode)) {
+            payment.setStatus(SUCCESS);
+        } else {
+            payment.setStatus(REJECTED);
+        }
+    }
+    
     private boolean isValidCOD(Map<String,String> paymentData){
         String address = paymentData.get("address");
         String deliveryFee = paymentData.get("deliveryFee");
