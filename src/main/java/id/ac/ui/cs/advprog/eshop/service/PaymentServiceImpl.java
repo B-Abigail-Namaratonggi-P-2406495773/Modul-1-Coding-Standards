@@ -44,6 +44,18 @@ public class PaymentServiceImpl implements PaymentService {
             }
         }
 
+        if ("COD".equals(method)) {
+
+            String address = paymentData.get("address");
+            String deliveryFee = paymentData.get("deliveryFee");
+
+            if (address == null || address.isEmpty() ||
+                    deliveryFee == null || deliveryFee.isEmpty()) {
+
+                payment.setStatus(REJECTED);
+            }
+        }
+
         paymentRepository.save(payment);
         paymentOrders.put(paymentId, order);
 
