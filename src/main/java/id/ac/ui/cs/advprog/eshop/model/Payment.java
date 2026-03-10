@@ -1,37 +1,34 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Builder
 @Getter
 public class Payment {
-    private String id;
-    private String method;
+
+    private final String id;
+    private final String method;
     private String status;
-    private Map<String, String> paymentData;
+    private final Map<String, String> paymentData;
+
+    private static final Set<String> VALID_STATUS =
+            Set.of("SUCCESS", "REJECTED", "PENDING");
 
     public Payment(String id, String method, String status, Map<String, String> paymentData) {
         this.id = id;
         this.method = method;
-        this.status = status;
         this.paymentData = paymentData;
+        setStatus(status);
     }
 
     public void setStatus(String status) {
-        if (!status.equals("SUCCESS") &&
-                !status.equals("REJECTED") &&
-                !status.equals("PENDING")) {
+        if (!VALID_STATUS.contains(status)) {
             throw new IllegalArgumentException("Invalid payment status");
         }
-
         this.status = status;
     }
 }
