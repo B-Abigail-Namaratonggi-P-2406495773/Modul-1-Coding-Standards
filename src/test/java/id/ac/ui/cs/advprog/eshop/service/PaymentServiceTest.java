@@ -150,4 +150,54 @@ class PaymentServiceTest {
 
         assertEquals("REJECTED", payment.getStatus());
     }
+
+    @Test
+    void testAddPaymentCODValid() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","Depok");
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertNotNull(payment);
+        assertEquals("COD",payment.getMethod());
+        assertEquals("PENDING",payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODEmptyAddress() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","");
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED",payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODEmptyDeliveryFee() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","Depok");
+        data.put("deliveryFee","");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED",payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODNullAddress() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address",null);
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED",payment.getStatus());
+    }
 }
