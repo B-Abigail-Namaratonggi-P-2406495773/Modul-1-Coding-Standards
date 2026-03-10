@@ -106,4 +106,48 @@ class PaymentServiceTest {
 
         assertEquals(2,result.size());
     }
+
+    @Test
+    void testAddPaymentWithValidVoucherCode() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("voucherCode", "ESHOP1234ABC5678");
+
+        Payment payment = paymentService.addPayment(order, "VOUCHER", data);
+
+        assertEquals("SUCCESS", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherLength() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("voucherCode", "ESHOP123");
+
+        Payment payment = paymentService.addPayment(order, "VOUCHER", data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherPrefix() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("voucherCode", "TOKO1234ABC5678");
+
+        Payment payment = paymentService.addPayment(order, "VOUCHER", data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherDigitCount() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("voucherCode", "ESHOPABCDEFABCDEF");
+
+        Payment payment = paymentService.addPayment(order, "VOUCHER", data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
 }
