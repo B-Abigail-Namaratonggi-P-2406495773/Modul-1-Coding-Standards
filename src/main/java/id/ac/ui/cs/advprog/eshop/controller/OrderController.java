@@ -46,4 +46,15 @@ public class OrderController {
         model.addAttribute("order", order);
         return "payOrder";
     }
+
+    @PostMapping("/pay/{orderId}")
+    public String payOrderPost(@PathVariable String orderId,
+                               @RequestParam String paymentMethod,
+                               Model model) {
+
+        String paymentId = java.util.UUID.randomUUID().toString();
+        Order order = orderService.findById(orderId);
+        model.addAttribute("paymentId", paymentId);
+        return "paymentResult";
+    }
 }
